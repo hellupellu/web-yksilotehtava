@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="fi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Suomen opiskelijaravintolat</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <!-- sivun yläosa ja navigaatio -->
+    <header>
+      <div class="container">
+        <h1>Suomen opiskelijaravintolat</h1>
+
+        <nav>
+          <a href="#restaurants">Ravintolat</a>
+          <a href="#menus">Ruokalistat</a>
+          <button type="button" id="open-account">Käyttäjätili</button>
+        </nav>
+      </div>
+    </header>
+    <!-- hakukenttä osio -->
+    <main class="container">
+      <section class="search-section">
+        <h2>Etsi opiskelijaravintola</h2>
+
+        <p>Suomen opiskelijaravintoloiden päivän ja viikon ruokalistat.</p>
+
+        <label for="search">Hae ravintolaa</label>
+        <input
+          type="search"
+          id="search"
+          placeholder="Hae ravintolaa nimellä..."
+        />
+      </section>
+
+      <!-- ravintolalista -->
+      <section id="restaurants">
+        <h2>Ravintolat</h2>
+        <p>Valitse ravintola, jotta näät sen ruokalistat.</p>
+
+        <!-- Ravintoloiden suodattimet -->
+        <div class="filter-bar">
+          <div class="filter-item">
+            <label for="city-filter">Kaupunki</label>
+            <select id="city-filter">
+              <option value="all">Kaikki kaupungit</option>
+            </select>
+          </div>
+
+          <div class="filter-item">
+            <label for="company-filter">Palveluntarjoaja</label>
+            <select id="company-filter">
+              <option value="all">Kaikki palveluntarjoajat</option>
+            </select>
+          </div>
+
+          <div class="filter-item">
+            <label for="sort-order">Järjestys</label>
+            <select id="sort-order">
+              <option value="aö">Nimi A-Ö</option>
+              <option value="öa">Nimi Ö-A</option>
+            </select>
+          </div>
+
+          <div class="favorites-filter">
+            <input type="checkbox" id="favorites-only" />
+            <label for="favorites-only">Vain suosikit</label>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Nimi</th>
+                <th>Kaupunki</th>
+                <th>Osoite</th>
+                <th>Suosikki</th>
+              </tr>
+            </thead>
+
+            <tbody id="restaurant-list">
+              <!-- Lisää ravintolat tähän JavaScriptillä -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ruokalistat -->
+      <section id="menus">
+        <h2>Ruokalistat</h2>
+        <p id="selected-restaurant">
+          Valitse ravintola nähdäksesi sen ruokalistat.
+        </p>
+
+        <div class="menu-selector">
+          <input type="radio" id="show-daily" name="menu" checked />
+          <label for="show-daily">Päivän ruokalista</label>
+
+          <input type="radio" id="show-weekly" name="menu" />
+          <label for="show-weekly">Viikon ruokalista</label>
+
+          <!-- päivän ruokalista -->
+          <article class="daily-menu">
+            <h3>Päivän ruokalista</h3>
+            <div id="daily-menu">
+              <p>Valitse ravintola nähdäksesi päivän ruokalistan.</p>
+            </div>
+          </article>
+
+          <!-- viikon ruokalista -->
+          <article class="weekly-menu">
+            <h3>Viikon ruokalista</h3>
+            <div id="weekly-menu">
+              <p>Valitse ravintola nähdäksesi viikon ruokalistan.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Käyttäjätilin ponnahdusikkuna -->
+      <dialog id="account-dialog">
+        <div class="dialog-header">
+          <h2>Käyttäjätili</h2>
+          <button type="button" id="close-account">x</button>
+        </div>
+
+        <div class="account-buttons">
+          <button type="button" id="show-login">Kirjaudu sisään</button>
+          <button type="button" id="show-register">Rekisteröidy</button>
+        </div>
+
+        <!-- Kirjautuminen -->
+        <div id="login-section">
+          <h3>Kirjaudu sisään</h3>
+
+          <form id="login-form">
+            <label for="login-username">Käyttäjätunnus</label>
+            <input type="text" id="login-username" required />
+
+            <label for="login-password">Salasana</label>
+            <input type="password" id="login-password" required />
+
+            <button type="submit">Kirjaudu sisään</button>
+          </form>
+
+          <p id="login-message"></p>
+        </div>
+
+        <!-- Rekisteröityminen -->
+        <div id="register-section" hidden>
+          <h3>Rekisteröidy</h3>
+
+          <form id="register-form">
+            <label for="register-username">Käyttäjätunnus</label>
+            <input type="text" id="register-username" required />
+
+            <label for="register-email">Sähköposti</label>
+            <input type="email" id="register-email" required />
+
+            <label for="register-password">Salasana</label>
+            <input type="password" id="register-password" required />
+
+            <button type="submit">Rekisteröidy</button>
+          </form>
+
+          <p id="register-message"></p>
+        </div>
+
+        <!-- Näytetään kirjautumisen jälkeen -->
+        <div id="logged-in-section" hidden>
+          <p>Kirjauduttu sisään!</p>
+        </div>
+
+        <!-- Käyttäjän omat tiedot -->
+        <div id="profile-section" hidden>
+          <h3>Omat tiedot</h3>
+
+          <form id="profile-form">
+            <label for="profile-username">Käyttäjätunnus</label>
+            <input type="text" id="profile-username" required />
+
+            <label for="profile-email">Sähköposti</label>
+            <input type="email" id="profile-email" required />
+
+            <label for="profile-favorite">Suosikkiravintola</label>
+            <select id="profile-favorite">
+              <option value="">Valitse ravintola</option>
+            </select>
+
+            <button type="submit">Tallenna muutokset</button>
+          </form>
+
+          <p id="profile-message"></p>
+
+          <button type="button" id="logout-button">Kirjaudu ulos</button>
+        </div>
+      </dialog>
+    </main>
+  </body>
+</html>
